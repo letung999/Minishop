@@ -29,4 +29,12 @@ public class ProductDAO implements ProductImpl {
         listProduct = session.createQuery("from product limit").setFirstResult(startProduct).setMaxResults(15).getResultList();
         return listProduct;
     }
+
+    @Override
+    @Transactional
+    public Product getProductById(int idProduct) {
+        Session session = sessionFactory.getCurrentSession();
+        Product product = (Product) session.createQuery("from product where idProduct ='" + idProduct +"'").getSingleResult();
+        return product;
+    }
 }

@@ -19,7 +19,7 @@ public class Product {
     private String description;
     private String photo;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
     @JoinColumn(name = "idProduct")
     private Set<DetailProduct> listDetailProduct;
 
