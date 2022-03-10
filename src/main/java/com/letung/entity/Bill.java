@@ -20,6 +20,14 @@ public class Bill {
     @JoinColumn(name = "idBill")
     Set<DetailBill> listDetailBill;
 
+    public Set<DetailBill> getListDetailBill() {
+        return listDetailBill;
+    }
+
+    public void setListDetailBill(Set<DetailBill> listDetailBill) {
+        this.listDetailBill = listDetailBill;
+    }
+
     public int getIdBill() {
         return idBill;
     }
