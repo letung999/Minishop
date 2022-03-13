@@ -81,6 +81,106 @@ $(document).ready(function () {
                 }
             })
         })
+    });
+
+    parseFloatPrice();
+    setTotalPrice();
+
+    function parseFloatPrice() {
+        $(".price").each(function() {
+            var price = $(this).text();
+            var newPrice = parseFloat(price)*1000;
+            $(this).html(newPrice);
+        });
+
+    }
+    function setTotalPrice() {
+        var totalPriceProduct = 0;
+        $(".price").each(function() {
+            var price = $(this).attr("data-price");
+            var quantity = $(this).closest("tr").find(".quantity-cart").val();
+            var tmp = parseFloat(price) * quantity * 1000;
+            totalPriceProduct = totalPriceProduct + tmp/1000;
+            $(this).closest("tr").find(".price").html(tmp);
+            var formattotalPriceProduct = totalPriceProduct.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            $("#total").html(formattotalPriceProduct + "VND");
+        });
+    }
+
+    $(".quantity-cart").change(function (){
+        setTotalPrice();
+        var quantity = $(this).val();
+        var idProduct = $(this).closest("tr").find(".product-cart").attr("data-idProduct");
+        var idColor = $(this).closest("tr").find(".color").attr("data-idColor");
+        var idSize = $(this).closest("tr").find(".size").attr("data-idSize");
+
+        $.ajax({
+            url:"/fashtionshop_war/api/updateCart",
+            type:"get",
+            data:{
+                quantity:quantity,
+                idColor:idColor,
+                idSize:idSize,
+                idProduct:idProduct
+            },
+            success: function (value){
+            }
+        })
     })
+
+    $(".btn-delete").click(function (){
+        var occur = $(this)
+        var idProduct = $(this).closest("tr").find(".product-cart").attr("data-idProduct");
+        var idColor = $(this).closest("tr").find(".color").attr("data-idColor");
+        var idSize = $(this).closest("tr").find(".size").attr("data-idSize");
+
+        $.ajax({
+            url:"/fashtionshop_war/api/deleteCart",
+            type:"get",
+            data:{
+                idColor:idColor,
+                idSize:idSize,
+                idProduct:idProduct
+            },
+            success: function (value){
+                occur.closest("tr").remove();
+                setTotalPrice();
+            }
+        }).done(function (value){
+            $.ajax({
+                url:"/fashtionshop_war/api/getQuantityInCart",
+                type:"get",
+                success:function (value){
+                    $("#cart").find("div").addClass("circle-quantity");
+                    $("#cart").find("div").html("<span>" + value + "</span>");
+                }
+            })
+        })
+    })
+
+
+    $("body").on("click", ".paging-item", function (){
+        $(".paging-item").removeClass("active");
+        $(this).addClass("active");
+        var numberPage = $(this).text();
+        var startProduct = (numberPage - 1) * 5;
+        $.ajax({
+            url:"/fashtionshop_war/api/getListProductLimit",
+            type:"get",
+            data:{
+                startProduct: startProduct,
+            },
+            success:function (value){
+                var tbody = $("#table-product").find("tbody");
+                tbody.empty();
+                tbody.append(value);
+            }
+        })
+    })
+
+    $("#btn-delete-product").click(function (){
+
+    })
+
 
 })

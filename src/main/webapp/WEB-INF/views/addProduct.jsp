@@ -16,12 +16,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         window.scrollTo(0, 1);
     } </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <link rel="stylesheet" href='<c:url value ="/resources/template/css/bootstrap.css"/>' type="text/css" media="all"/>
+    <link rel="stylesheet" href='<c:url value ="/resources/bootstrap/css/bootstrap.min.css"/>' type="text/css" media="all"/>
     <!-- Custom Theme files -->
     <link rel="stylesheet" href='<c:url value ="/resources/template/css/style.css"/>' type="text/css" media="all"/>
     <!--js-->
     <script src='<c:url value ="/resources/template/js/jquery-3.3.1.min.js"/>'></script>
-
+    <script src='<c:url value ="/resources/js/custom.js"/>'></script>
     <!--icons-css-->
     <link rel="stylesheet" href='<c:url value ="/resources/template/css/font-awesome.css"/>' type="text/css" media="all"/>
 
@@ -110,38 +110,46 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 <body>
 <div class="page-container">
-    <div class="left-content">
-        <table class="table table-sm">
-            <thead>
-            <tr class="bg-warning">
-                <th scope="col">
-                    <div class="checkbox">
-                        <label><input id="check-all" style="width: 25px; height: 25px;" type="checkbox" value=""></label>
-                    </div>
-                </th>
-                <th scope="col">Tên Sản Phẩm</th>
-                <th scope="col">Giá Tiền</th>
-                <th scope="col">Dành Cho</th>
-                <th scope="col">Cập Nhập</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="product" items="${listProduct}">
-                <tr>
-                    <td >
+    <div class="left-content" style="padding-left: 25px">
+        <div class="row">
+            <h3>Sản Phẩm</h3>
+            <div style="float: right">
+                <button class="btn btn-secondary">Thêm Sản Phẩm</button>
+                <button id="btn-delete-product" class="btn btn-danger">Xóa Sản Phẩm</button>
+            </div>
+            <table id="table-product" class="table table-sm">
+                <thead>
+                <tr class="bg-warning">
+                    <th scope="col">
                         <div class="checkbox">
-                            <label><input class="checkbox-product" style="width: 25px; height: 25px;" type="checkbox" value="${product.idProduct}"></label>
+                            <label><input id="check-all" style="width: 25px; height: 25px;" type="checkbox" value=""></label>
                         </div>
-                    </td>
-                    <td class="nameProduct"
-                        data-idProduct="${product.idProduct}">${product.nameProduct}</td>
-                    <td class="price" data-price ="${product.price}">${product.price}</td>
-                    <td class="gender" data-gender ="${product.gender}">${product.gender}</td>
-                    <td class="btn btn-warning updateProduct" data-id ="${product.idProduct}">Sửa</td>
+                    </th>
+                    <th scope="col">Tên Sản Phẩm</th>
+                    <th scope="col">Giá Tiền</th>
+                    <th scope="col">Dành Cho</th>
+                    <th scope="col">Cập Nhập</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <c:forEach var="product" items="${listProduct}">
+                    <tr>
+                        <td >
+                            <div class="checkbox">
+                                <label><input class="checkbox-product" style="width: 25px; height: 25px;" type="checkbox" value="${product.idProduct}"></label>
+                            </div>
+                        </td>
+                        <td class="nameProduct"
+                            data-idProduct="${product.idProduct}">${product.nameProduct}</td>
+                        <td class="price" data-price ="${product.price}">${product.price}</td>
+                        <td class="gender" data-gender ="${product.gender}">${product.gender}</td>
+                        <td class="btn btn-warning updateProduct" data-id ="${product.idProduct}">Sửa</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
 
         <ul class="pagination">
             <c:forEach var="i" begin="1" end="${totalPage }">

@@ -2,7 +2,9 @@ package com.letung.controller;
 
 
 import com.letung.entity.Cart;
+import com.letung.entity.Product;
 import com.letung.service.EmployeeService;
+import com.letung.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +22,9 @@ public class APIController {
 
     @Autowired
     EmployeeService employeeService;
+
+    @Autowired
+    ProductService productService;
 
 
     @GetMapping("checkLogin")
@@ -68,12 +73,55 @@ public class APIController {
 
     @GetMapping("getQuantityInCart")
     @ResponseBody
-    public String getQuantityInCart(HttpSession httpSession){
-        if(httpSession.getAttribute("cart") != null){
+    public String getQuantityInCart(HttpSession httpSession) {
+        if (httpSession.getAttribute("cart") != null) {
             List<Cart> cartList = (List<Cart>) httpSession.getAttribute("cart");
             return "" + cartList.size();
         }
         return "";
+    }
+
+    @GetMapping("updateCart")
+    @ResponseBody
+    public void updateCart(HttpSession httpSession, @RequestParam int quantity,
+                           @RequestParam int idProduct, @RequestParam int idColor,
+                           @RequestParam int idSize) {
+        if (httpSession.getAttribute("cart") != null) {
+            List<Cart> cartList = (List<Cart>) httpSession.getAttribute("cart");
+            int index = checkExitProduct(idProduct, idSize, idColor, httpSession);
+            cartList.get(index).setQuantity(quantity);
+        }
+    }
+
+    @GetMapping("deleteCart")
+    @ResponseBody
+    public void deleteCart(HttpSession httpSession, @RequestParam int idProduct, @RequestParam int idColor,
+                           @RequestParam int idSize) {
+        if (httpSession.getAttribute("cart") != null) {
+            List<Cart> cartList = (List<Cart>) httpSession.getAttribute("cart");
+            int index = checkExitProduct(idProduct, idSize, idColor, httpSession);
+            cartList.remove(index);
+        }
+    }
+
+    @GetMapping(path = "getListProductLimit", produces = "text/plain; charset=UTF-8")
+    @ResponseBody
+    public String getListproductLimit(@RequestParam int startProduct) {
+        String html = "";
+        List<Product> listProduct = productService.getListProductLimit(startProduct);
+        for (Product product : listProduct) {
+            html += "<tr>";
+            html += "<td ><div class='checkbox'> <label><input class='checkbox-product' style='width: 25px; height: 25px;' type='checkbox' value='"
+                    + product.getIdProduct() + "'></label></div></td>";
+            html += "<td class='idProduct' data-idProduct =" + product.getIdProduct() + "'>" + product.getNameProduct()
+                    + "</td>";
+            html += "<td class='price' data-value =" + product.getPrice() + "'>" + product.getPrice() + "</td>";
+            html += "<td class='gender' data-gender =" + product.getGender() + "'>" + product.getGender() + "</td>";
+            html += "<td class='updateProduct btn btn-warning' data-id =" + product.getIdProduct() + ">Sửa</td>";
+            html += "</tr>";
+        }
+
+        return html;
     }
 
 }
