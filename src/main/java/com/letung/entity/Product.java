@@ -18,6 +18,8 @@ public class Product {
     private String price;
     private String description;
     private String photo;
+    private String gender;
+
 
     @OneToMany(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
     @JoinColumn(name = "idProduct")
@@ -94,5 +96,13 @@ public class Product {
 
     public void setListSale(Set<Sale> listSale) {
         this.listSale = listSale;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

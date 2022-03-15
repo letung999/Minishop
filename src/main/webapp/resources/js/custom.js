@@ -178,9 +178,57 @@ $(document).ready(function () {
         })
     })
 
-    $("#btn-delete-product").click(function (){
-
+    $("#check-all").change(function (){
+        if(this.checked){
+            $("#table-product input").each(function (){
+                $(this).attr("checked", true)
+            })
+        }
+        else{
+            $("#table-product input").each(function (){
+                $(this).attr("checked", false)
+            })
+        }
     })
+
+    $("#btn-delete-product").click(function (){
+        $("#table-product > tbody input:checked").each(function (){
+            var idProduct = $(this).val();
+            var thisInput = $(this);
+
+            $.ajax({
+                url:"/fashtionshop_war/api/deleteProductById",
+                type:"get",
+                data:{
+                    idProduct:idProduct
+                },
+                success:function (value){
+                    thisInput.closest("tr").remove();
+                }
+            })
+        })
+    })
+
+
+    /* $("#delete-product").click(function() {
+         $("#table-product > tbody input:checked").each(function() {
+             var idProduct = ($(this).val());
+             var This = $(this);
+             This.closest("tr").remove();
+             $.ajax({
+
+                 url: "/book-shop/api/deleteProduct",
+                 type: "GET",
+                 data: {
+                     idProduct: idProduct
+                 },
+                 success: function(value) {
+                     This.closest("tr").remove();
+                 }
+             })
+         })
+     });*/
+
 
 
 })

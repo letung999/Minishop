@@ -23,4 +23,14 @@ public class ProductService implements ProductImpl {
     public Product getProductById(int idProduct) {
         return productDAO.getProductById(idProduct);
     }
+
+    @Override
+    public List<Product> getListProductByCategory(int idCategory) {
+        return productDAO.getListProductByCategory(idCategory);
+    }
+
+    @Override
+    public boolean deleteProductById(int idProduct) {
+        return productDAO.deleteProductById(idProduct);
+    }
 }

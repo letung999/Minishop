@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProductImpl {
     List<Product> getListProductLimit(int startProduct);
     Product getProductById(int idProduct);
+    List<Product> getListProductByCategory(int idCategory);
+    boolean deleteProductById(int idProduct);
 }

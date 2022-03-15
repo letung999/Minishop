@@ -5,6 +5,8 @@ import com.letung.entity.Cart;
 import com.letung.entity.Product;
 import com.letung.service.EmployeeService;
 import com.letung.service.ProductService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +21,9 @@ import java.util.List;
 @RequestMapping("api/")
 @SessionAttributes({"email", "cart"})
 public class APIController {
+
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Autowired
     EmployeeService employeeService;
@@ -122,6 +127,12 @@ public class APIController {
         }
 
         return html;
+    }
+
+    @GetMapping("deleteProductById")
+    @ResponseBody
+    public void deleteProduct(@RequestParam int idProduct){
+        productService.deleteProductById(idProduct);
     }
 
 }
