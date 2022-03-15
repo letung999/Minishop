@@ -11,9 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -133,6 +139,24 @@ public class APIController {
     @ResponseBody
     public void deleteProduct(@RequestParam int idProduct){
         productService.deleteProductById(idProduct);
+    }
+
+    @Autowired
+    ServletContext servletContext;
+
+    @PostMapping ("upLoadFile")
+    @ResponseBody
+    public void upLoadFile(MultipartHttpServletRequest request){
+        String pathSaveFile = servletContext.getRealPath("/resources/image/nameStuff/");
+        Iterator<String> listName = request.getFileNames();
+        MultipartFile multipartFile = request.getFile(listName.next());
+        File fileSave = new File(pathSaveFile + multipartFile.getOriginalFilename());
+        try {
+            multipartFile.transferTo(fileSave);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(pathSaveFile);
     }
 
 }

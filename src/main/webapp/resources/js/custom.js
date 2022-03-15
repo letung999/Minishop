@@ -52,30 +52,30 @@ $(document).ready(function () {
         var nameProduct = $("#name-product").text();
         var price = $("#price").text();
         var nameColor = $(this).closest("tr").find(".color").text();
-        var nameSize =  $(this).closest("tr").find(".size").text();
+        var nameSize = $(this).closest("tr").find(".size").text();
         var quantity = $(this).closest("tr").find(".quantity").text();
         $.ajax({
             url: "/fashtionshop_war/api/addCart",
             type: "get",
             data: {
-                idDetailProduct:idDetailProduct,
-                idProduct:idProduct,
-                idSize:idSize,
-                idColor:idColor,
-                nameProduct:nameProduct,
-                price:price,
-                nameColor:nameColor,
-                nameSize:nameSize,
-                quantity:quantity
+                idDetailProduct: idDetailProduct,
+                idProduct: idProduct,
+                idSize: idSize,
+                idColor: idColor,
+                nameProduct: nameProduct,
+                price: price,
+                nameColor: nameColor,
+                nameSize: nameSize,
+                quantity: quantity
             },
-            success:function (value) {
+            success: function (value) {
 
             }
-        }).done(function (){
+        }).done(function () {
             $.ajax({
-                url:"/fashtionshop_war/api/getQuantityInCart",
-                type:"get",
-                success:function (value){
+                url: "/fashtionshop_war/api/getQuantityInCart",
+                type: "get",
+                success: function (value) {
                     $("#cart").find("div").addClass("circle-quantity");
                     $("#cart").find("div").html("<span>" + value + "</span>");
                 }
@@ -87,27 +87,28 @@ $(document).ready(function () {
     setTotalPrice();
 
     function parseFloatPrice() {
-        $(".price").each(function() {
+        $(".price").each(function () {
             var price = $(this).text();
-            var newPrice = parseFloat(price)*1000;
+            var newPrice = parseFloat(price) * 1000;
             $(this).html(newPrice);
         });
 
     }
+
     function setTotalPrice() {
         var totalPriceProduct = 0;
-        $(".price").each(function() {
+        $(".price").each(function () {
             var price = $(this).attr("data-price");
             var quantity = $(this).closest("tr").find(".quantity-cart").val();
             var tmp = parseFloat(price) * quantity * 1000;
-            totalPriceProduct = totalPriceProduct + tmp/1000;
+            totalPriceProduct = totalPriceProduct + tmp / 1000;
             $(this).closest("tr").find(".price").html(tmp);
             var formattotalPriceProduct = totalPriceProduct.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
             $("#total").html(formattotalPriceProduct + "VND");
         });
     }
 
-    $(".quantity-cart").change(function (){
+    $(".quantity-cart").change(function () {
         setTotalPrice();
         var quantity = $(this).val();
         var idProduct = $(this).closest("tr").find(".product-cart").attr("data-idProduct");
@@ -115,42 +116,42 @@ $(document).ready(function () {
         var idSize = $(this).closest("tr").find(".size").attr("data-idSize");
 
         $.ajax({
-            url:"/fashtionshop_war/api/updateCart",
-            type:"get",
-            data:{
-                quantity:quantity,
-                idColor:idColor,
-                idSize:idSize,
-                idProduct:idProduct
+            url: "/fashtionshop_war/api/updateCart",
+            type: "get",
+            data: {
+                quantity: quantity,
+                idColor: idColor,
+                idSize: idSize,
+                idProduct: idProduct
             },
-            success: function (value){
+            success: function (value) {
             }
         })
     })
 
-    $(".btn-delete").click(function (){
+    $(".btn-delete").click(function () {
         var occur = $(this)
         var idProduct = $(this).closest("tr").find(".product-cart").attr("data-idProduct");
         var idColor = $(this).closest("tr").find(".color").attr("data-idColor");
         var idSize = $(this).closest("tr").find(".size").attr("data-idSize");
 
         $.ajax({
-            url:"/fashtionshop_war/api/deleteCart",
-            type:"get",
-            data:{
-                idColor:idColor,
-                idSize:idSize,
-                idProduct:idProduct
+            url: "/fashtionshop_war/api/deleteCart",
+            type: "get",
+            data: {
+                idColor: idColor,
+                idSize: idSize,
+                idProduct: idProduct
             },
-            success: function (value){
+            success: function (value) {
                 occur.closest("tr").remove();
                 setTotalPrice();
             }
-        }).done(function (value){
+        }).done(function (value) {
             $.ajax({
-                url:"/fashtionshop_war/api/getQuantityInCart",
-                type:"get",
-                success:function (value){
+                url: "/fashtionshop_war/api/getQuantityInCart",
+                type: "get",
+                success: function (value) {
                     $("#cart").find("div").addClass("circle-quantity");
                     $("#cart").find("div").html("<span>" + value + "</span>");
                 }
@@ -159,18 +160,18 @@ $(document).ready(function () {
     })
 
 
-    $("body").on("click", ".paging-item", function (){
+    $("body").on("click", ".paging-item", function () {
         $(".paging-item").removeClass("active");
         $(this).addClass("active");
         var numberPage = $(this).text();
         var startProduct = (numberPage - 1) * 5;
         $.ajax({
-            url:"/fashtionshop_war/api/getListProductLimit",
-            type:"get",
-            data:{
+            url: "/fashtionshop_war/api/getListProductLimit",
+            type: "get",
+            data: {
                 startProduct: startProduct,
             },
-            success:function (value){
+            success: function (value) {
                 var tbody = $("#table-product").find("tbody");
                 tbody.empty();
                 tbody.append(value);
@@ -178,57 +179,53 @@ $(document).ready(function () {
         })
     })
 
-    $("#check-all").change(function (){
-        if(this.checked){
-            $("#table-product input").each(function (){
+    $("#check-all").change(function () {
+        if (this.checked) {
+            $("#table-product input").each(function () {
                 $(this).attr("checked", true)
             })
-        }
-        else{
-            $("#table-product input").each(function (){
+        } else {
+            $("#table-product input").each(function () {
                 $(this).attr("checked", false)
             })
         }
     })
 
-    $("#btn-delete-product").click(function (){
-        $("#table-product > tbody input:checked").each(function (){
+    $("#btn-delete-product").click(function () {
+        $("#table-product > tbody input:checked").each(function () {
             var idProduct = $(this).val();
             var thisInput = $(this);
 
             $.ajax({
-                url:"/fashtionshop_war/api/deleteProductById",
-                type:"get",
-                data:{
-                    idProduct:idProduct
+                url: "/fashtionshop_war/api/deleteProductById",
+                type: "get",
+                data: {
+                    idProduct: idProduct
                 },
-                success:function (value){
+                success: function (value) {
                     thisInput.closest("tr").remove();
                 }
             })
         })
     })
+    var files = [];
+    $("#picture").change(function () {
+        files = event.target.files
+        forms = new FormData();
+        forms.append("file", files[0]);
 
+        $.ajax({
+            url: "/fashtionshop_war/api/upLoadFile",
+            type: "post",
+            data: forms,
+            contentType:false,
+            processData: false,
+            enctype:"multipart/form-data",
+            success: function (value) {
 
-    /* $("#delete-product").click(function() {
-         $("#table-product > tbody input:checked").each(function() {
-             var idProduct = ($(this).val());
-             var This = $(this);
-             This.closest("tr").remove();
-             $.ajax({
-
-                 url: "/book-shop/api/deleteProduct",
-                 type: "GET",
-                 data: {
-                     idProduct: idProduct
-                 },
-                 success: function(value) {
-                     This.closest("tr").remove();
-                 }
-             })
-         })
-     });*/
-
+            }
+        })
+    })
 
 
 })
