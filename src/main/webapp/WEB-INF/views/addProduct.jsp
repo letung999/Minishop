@@ -111,61 +111,116 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 <div class="page-container">
     <div class="left-content" style="padding-left: 25px">
+        <h3>Sản Phẩm</h3>
         <div class="row">
-            <h3>Sản Phẩm</h3>
-            <div style="float: right">
-                <button class="btn btn-secondary">Thêm Sản Phẩm</button>
-                <button id="btn-delete-product" class="btn btn-danger">Xóa Sản Phẩm</button>
+            <div class="col-md-6 col-sm-12" >
+                <form id="form-product" action="">
+                    <label for="name-product">Tên Sản Phẩm</label><br>
+                    <input type="text" id="name-product" name="name-product" placeholder="Nhập Vào Tên Sản Phẩm" class="form-control"><br>
+
+                    <label for="price">Giá Tiền</label><br>
+                    <input type="text" id="price" name="price" placeholder="Giá Tiền" class="form-control"><br>
+
+                    <span>Dành Cho</span><br>
+                    <div class="radio">
+                        <label><input type="radio" name="gender" checked value="Nam">Nam</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="gender" value="Nũ">Nữ</label>
+                    </div>
+
+                    <label for="category">Danh Mục Sản Phẩm:</label>
+                    <select class="form-control" id="category" name="category">
+                        <c:forEach var="category" items="${listCategory}">
+                            <option value="${category.getNameCategory()}">${category.getNameCategory()}</option>
+                        </c:forEach>
+
+                    </select><br>
+
+                    <label for="comment">Mô Tả</label>
+                    <textarea class="form-control" name="description" rows="5" id="comment" placeholder="Nhập Vào Mô Tả"></textarea><br>
+
+                    <label for="picture">Hình Ảnh</label><br>
+                    <input type="file" name="picture" id="picture" placeholder="Nhập Vào Tên Sản Phẩm" class="form-control"><br>
+
+                    <h3>Chi Tiết Sản Phẩm</h3>
+
+                    <label for="color">Màu Sản Phẩm</label><br>
+                    <select class="form-control" id="color" name="color">
+                        <c:forEach var="color" items="${listColorProduct}">
+                            <option value="${color.nameColor}">${color.nameColor}</option>
+                        </c:forEach>
+                    </select><br>
+
+                    <label for="size">Size Sản Phẩm</label><br>
+                    <select class="form-control" id="size" name="size">
+                        <c:forEach var="size" items="${listSizeProduct}">
+                            <option value="${size.nameSize}">${size.nameSize}</option>
+                        </c:forEach>
+                    </select><br>
+
+                    <input type="number" id="quanity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
+
+                    <div style="float: right; margin-bottom: 10px;">
+                        <button class="btn btn-secondary">Thêm Sản Phẩm</button>
+                    </div>
+                </form>
             </div>
-            <table id="table-product" class="table table-sm">
-                <thead>
-                <tr class="bg-warning">
-                    <th scope="col">
-                        <div class="checkbox">
-                            <label><input id="check-all" style="width: 25px; height: 25px;" type="checkbox" value=""></label>
-                        </div>
-                    </th>
-                    <th scope="col">Tên Sản Phẩm</th>
-                    <th scope="col">Giá Tiền</th>
-                    <th scope="col">Dành Cho</th>
-                    <th scope="col">Cập Nhập</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="product" items="${listProduct}">
-                    <tr>
-                        <td >
+            <div class="col-md-6 col-sm-12">
+                <div style="float: right; margin-bottom: 10px;">
+                    <button id="btn-delete-product" class="btn btn-danger">Xóa Sản Phẩm</button>
+                </div>
+                <table id="table-product" class="table table-sm">
+                    <thead>
+                    <tr class="bg-warning">
+                        <th scope="col">
                             <div class="checkbox">
-                                <label><input class="checkbox-product" style="width: 25px; height: 25px;" type="checkbox" value="${product.idProduct}"></label>
+                                <label><input id="check-all" style="width: 25px; height: 25px;" type="checkbox" value=""></label>
                             </div>
-                        </td>
-                        <td class="nameProduct"
-                            data-idProduct="${product.idProduct}">${product.nameProduct}</td>
-                        <td class="price" data-price ="${product.price}">${product.price}</td>
-                        <td class="gender" data-gender ="${product.gender}">${product.gender}</td>
-                        <td class="btn btn-warning updateProduct" data-id ="${product.idProduct}">Sửa</td>
+                        </th>
+                        <th scope="col">Tên Sản Phẩm</th>
+                        <th scope="col">Giá Tiền</th>
+                        <th scope="col">Dành Cho</th>
+                        <th scope="col">Cập Nhập</th>
                     </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="product" items="${listProduct}">
+                        <tr>
+                            <td >
+                                <div class="checkbox">
+                                    <label><input class="checkbox-product" style="width: 25px; height: 25px;" type="checkbox" value="${product.idProduct}"></label>
+                                </div>
+                            </td>
+                            <td class="nameProduct"
+                                data-idProduct="${product.idProduct}">${product.nameProduct}</td>
+                            <td class="price" data-price ="${product.price}">${product.price}</td>
+                            <td class="gender" data-gender ="${product.gender}">${product.gender}</td>
+                            <td class="btn btn-warning updateProduct" data-id ="${product.idProduct}">Sửa</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+                <ul class="pagination">
+                <c:forEach var="i" begin="1" end="${totalPage }">
+                    <c:choose>
+
+                        <c:when test="${i == 1 }">
+                            <li class="paging-item page-item active"><a class="page-link" href="#">${i }</a></li>
+                        </c:when>
+
+                        <c:otherwise>
+                            <li class="paging-item page-item"><a class="page-link" href="#">${i}</a></li>
+                        </c:otherwise>
+
+                    </c:choose>
                 </c:forEach>
-                </tbody>
-            </table>
+            </ul>
+            </div>
+
+
         </div>
 
-
-        <ul class="pagination">
-            <c:forEach var="i" begin="1" end="${totalPage }">
-                <c:choose>
-
-                    <c:when test="${i == 1 }">
-                        <li class="paging-item page-item active"><a class="page-link" href="#">${i }</a></li>
-                    </c:when>
-
-                    <c:otherwise>
-                        <li class="paging-item page-item"><a class="page-link" href="#">${i}</a></li>
-                    </c:otherwise>
-
-                </c:choose>
-            </c:forEach>
-        </ul>
     </div>
     <!--slider menu-->
     <div class="sidebar-menu" >
