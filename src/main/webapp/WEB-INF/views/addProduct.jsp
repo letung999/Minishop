@@ -148,14 +148,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <label for="color">Màu Sản Phẩm</label><br>
                     <select class="form-control" id="color" name="color">
                         <c:forEach var="color" items="${listColorProduct}">
-                            <option value="${color.nameColor}">${color.nameColor}</option>
+                            <option value="${color.idColor}">${color.nameColor}</option>
                         </c:forEach>
                     </select><br>
 
                     <label for="size">Size Sản Phẩm</label><br>
                     <select class="form-control" id="size" name="size">
                         <c:forEach var="size" items="${listSizeProduct}">
-                            <option value="${size.nameSize}">${size.nameSize}</option>
+                            <option value="${size.idSize}">${size.nameSize}</option>
                         </c:forEach>
                     </select><br>
 
