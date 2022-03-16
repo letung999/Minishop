@@ -9,15 +9,15 @@ public class DetailProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDetailProduct;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(/*cascade = CascadeType.ALL*/)
     @JoinColumn(name = "idProduct")
     private Product product;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(/*cascade = CascadeType.ALL*/)
     @JoinColumn(name = "idSize")
     Size size;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(/*cascade = CascadeType.ALL*/)
     @JoinColumn(name = "idColor")
     ColorProduct colorProduct;
 

@@ -2,6 +2,8 @@ package com.letung.controller;
 
 
 import com.letung.entity.Product;
+import com.letung.entity.ProductCategory;
+import com.letung.service.CategoryService;
 import com.letung.service.ProductService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +23,9 @@ public class HomeController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping
     @Transactional
     public String home(ModelMap modelMap, HttpSession httpSession) {
@@ -30,8 +35,10 @@ public class HomeController {
             modelMap.addAttribute("firstWord", firstWord);
         }
 
-        List<Product> listProduct = productService.getListProductLimit(0);
+        List<Product> listProduct = productService.getListProductLimit(-1);
+        List<ProductCategory> listCategory = categoryService.listProductCategory();
         modelMap.addAttribute("listProduct", listProduct);
+        modelMap.addAttribute("listCategory", listCategory);
         return "home";
 
     }

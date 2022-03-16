@@ -29,10 +29,19 @@ public class DetailController {
     @Autowired
     CategoryService categoryService;
 
+
     @GetMapping("{idProduct}")
     public String Default(@PathVariable int idProduct, ModelMap modelMap, HttpSession httpSession){
+
+        if(httpSession.getAttribute("email") != null){
+            String email = (String) httpSession.getAttribute("email");
+            String firstWord = email.substring(0, 1).toUpperCase();
+            modelMap.addAttribute("firstWord", firstWord);
+        }
+
         Product product = productService.getProductById(idProduct);
         List<ProductCategory> listCategory = categoryService.listProductCategory();
+
         if(httpSession.getAttribute("cart") != null){
             List<Cart> cartList = (List<Cart>) httpSession.getAttribute("cart");
             modelMap.addAttribute("quantity", cartList.size());
