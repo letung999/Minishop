@@ -209,8 +209,11 @@ $(document).ready(function () {
         })
     })
     var files = [];
+    var filePhoto="";
+
     $("#picture").change(function () {
         files = event.target.files
+        filePhoto = files[0].name;
         forms = new FormData();
         forms.append("file", files[0]);
 
@@ -221,6 +224,50 @@ $(document).ready(function () {
             contentType:false,
             processData: false,
             enctype:"multipart/form-data",
+            success: function (value) {
+
+            }
+        })
+    })
+
+    $("body").on("click",".btn-detail", function (){
+        $(this).remove();// xoa nút đi
+        var detailClone = $("#detailProduct").clone();
+        $("#container-detail-product").append(detailClone);
+        detailClone.removeAttr("id");
+    })
+
+    $("#btn-addProduct").click(function (event){
+        event.preventDefault();
+        var formData = $("#form-product").serializeArray();
+        json = {};
+        arrayDetailProduct = [];
+
+        $.each(formData, function(i, field) {
+            json[field.name] = field.value;
+        });
+        console.log(json)
+
+        $("#container-detail-product > .detail-product").each(function (){
+            objectDetail ={};
+            var colorProduct = $(this).find("select[name='color']").val();
+            var sizeProduct = $(this).find("select[name='size']").val();
+            var quantity = $(this).find("input[name='quantity']").val();
+            objectDetail["colorProduct"] = colorProduct;
+            objectDetail["sizeProduct"] = sizeProduct;
+            objectDetail["quantity"] = quantity;
+            arrayDetailProduct.push(objectDetail);
+
+        })
+        json["detailProduct"] = arrayDetailProduct;
+        json["photo"] = filePhoto;
+
+        $.ajax({
+            url: "/fashtionshop_war/api/addProduct",
+            type: "POST",
+            data:{
+                dataJason:JSON.stringify(json),
+            },
             success: function (value) {
 
             }

@@ -132,7 +132,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <label for="category">Danh Mục Sản Phẩm:</label>
                     <select class="form-control" id="category" name="category">
                         <c:forEach var="category" items="${listCategory}">
-                            <option value="${category.getNameCategory()}">${category.getNameCategory()}</option>
+                            <option value="${category.getIdCategory()}">${category.getNameCategory()}</option>
                         </c:forEach>
 
                     </select><br>
@@ -141,10 +141,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <textarea class="form-control" name="description" rows="5" id="comment" placeholder="Nhập Vào Mô Tả"></textarea><br>
 
                     <label for="picture">Hình Ảnh</label><br>
-                    <input type="file" name="picture" id="picture" placeholder="Nhập Vào Tên Sản Phẩm" class="form-control"><br>
+                    <input type="file" name="picture" id="picture" class="form-control"><br>
+                </form>
 
+                <div id="container-detail-product">
+                    <div class="detail-product">
+                        <h3>Chi Tiết Sản Phẩm</h3>
+                        <label for="color">Màu Sản Phẩm</label><br>
+                        <select class="form-control" id="color" name="color">
+                            <c:forEach var="color" items="${listColorProduct}">
+                                <option value="${color.idColor}">${color.nameColor}</option>
+                            </c:forEach>
+                        </select><br>
+
+                        <label for="size">Size Sản Phẩm</label><br>
+                        <select class="form-control" id="size" name="size">
+                            <c:forEach var="size" items="${listSizeProduct}">
+                                <option value="${size.idSize}">${size.nameSize}</option>
+                            </c:forEach>
+                        </select><br>
+
+                        <input min="1" type="number" id="quanity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
+                        <button class="btn-detail btn btn-secondary">Thêm Chi Tiết</button>
+                    </div>
+                </div>
+
+                <div id="detailProduct" class="detail-product">
                     <h3>Chi Tiết Sản Phẩm</h3>
-
                     <label for="color">Màu Sản Phẩm</label><br>
                     <select class="form-control" id="color" name="color">
                         <c:forEach var="color" items="${listColorProduct}">
@@ -158,13 +181,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <option value="${size.idSize}">${size.nameSize}</option>
                         </c:forEach>
                     </select><br>
-
                     <input type="number" id="quanity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
+                    <button class="btn-detail btn btn-secondary">Thêm Chi Tiết</button>
 
-                    <div style="float: right; margin-bottom: 10px;">
-                        <button class="btn btn-secondary">Thêm Sản Phẩm</button>
-                    </div>
-                </form>
+                </div>
+
+                <div style="float: right; margin-bottom: 10px;">
+                    <button id="btn-addProduct" class="btn btn-secondary">Thêm Sản Phẩm</button>
+                </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div style="float: right; margin-bottom: 10px;">

@@ -1,8 +1,11 @@
 package com.letung.controller;
 
 
-import com.letung.entity.Cart;
-import com.letung.entity.Product;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.letung.entity.*;
 import com.letung.service.EmployeeService;
 import com.letung.service.ProductService;
 import org.hibernate.Session;
@@ -18,9 +21,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -142,21 +143,81 @@ public class APIController {
     }
 
     @Autowired
-    ServletContext servletContext;
+    ServletContext context;
 
-    @PostMapping ("upLoadFile")
+    @PostMapping("uploadFile")
     @ResponseBody
-    public void upLoadFile(MultipartHttpServletRequest request){
-        String pathSaveFile = servletContext.getRealPath("/resources/image/nameStuff/");
-        Iterator<String> listName = request.getFileNames();
-        MultipartFile multipartFile = request.getFile(listName.next());
-        File fileSave = new File(pathSaveFile + multipartFile.getOriginalFilename());
+    public String upLoadFile(MultipartHttpServletRequest request) {
+        String pathSaveFile = context.getRealPath("/resources/image/nameStuff/");
+        Iterator<String> listFileName = request.getFileNames();
+        MultipartFile multipartFile = request.getFile(listFileName.next());
+        File file = new File(pathSaveFile + multipartFile.getOriginalFilename());
         try {
-            multipartFile.transferTo(fileSave);
+            multipartFile.transferTo(file);
+        } catch (IllegalStateException e) {
+
+            e.printStackTrace();
         } catch (IOException e) {
+
             e.printStackTrace();
         }
-        System.out.println(pathSaveFile);
+        System.out.print(pathSaveFile);
+        return "";
+    }
+
+    @PostMapping("addProduct")
+    @ResponseBody
+    public void addProduct(@RequestParam String dataJason){
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonObject;
+
+        try {
+            jsonObject = objectMapper.readTree(dataJason);
+            Product product = new Product();
+
+            String nameProduct = jsonObject.get("name-product").asText();
+            String price = jsonObject.get("price").asText();
+            String gender = jsonObject.get("gender").asText();
+            String description = jsonObject.get("description").asText();
+            String photo = jsonObject.get("photo").asText();
+
+            ProductCategory category = new ProductCategory();
+            category.setIdCategory(jsonObject.get("category").asInt());
+
+            JsonNode jsonListDetail = jsonObject.get("detailProduct");
+            Set<DetailProduct> listDetailProduct = new HashSet<>();
+            for (JsonNode jasonDetail:jsonListDetail) {
+                DetailProduct detailProduct = new DetailProduct();
+
+                ColorProduct colorProduct = new ColorProduct();
+                colorProduct.setIdColor(jasonDetail.get("colorProduct").asInt());
+
+                Size size = new Size();
+                size.setIdSize(jasonDetail.get("sizeProduct").asInt());
+
+                detailProduct.setColorProduct(colorProduct);
+                detailProduct.setSize(size);
+                detailProduct.setQuantity(jasonDetail.get("quantity").asInt());
+
+                listDetailProduct.add(detailProduct);
+
+            }
+            product.setNameProduct(nameProduct);
+            product.setPrice(price);
+            product.setGender(gender);
+            product.setProductCategory(category);
+            product.setDescription(description);
+            product.setPhoto(photo);
+            product.setListDetailProduct(listDetailProduct);
+
+            System.out.println(product.getProductCategory().getIdCategory());
+
+            productService.addProduct(product);
+
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
 }

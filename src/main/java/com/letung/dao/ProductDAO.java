@@ -61,12 +61,24 @@ public class ProductDAO implements ProductImpl {
         Session session = sessionFactory.getCurrentSession();
         Product product = session.get(Product.class, idProduct);
         Set<DetailProduct> detailProducts = product.getListDetailProduct();
-
+        /**
+         * delete DetailBill
+         * delete DetailProduct
+         * delete Product
+         */
         for (DetailProduct detailProduct:detailProducts) {
             session.createQuery("delete detailbill where detailBillId.idDetailProduct =" + detailProduct.getIdDetailProduct()).executeUpdate();
         }
         session.createQuery("delete detailproduct where product.idProduct =" + idProduct).executeUpdate();
         session.createQuery("delete product where idProduct =" + idProduct).executeUpdate();
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean addProduct(Product product) {
+        Session session = sessionFactory.getCurrentSession();
+        int idProduct = (int) session.save(product);
         return false;
     }
 }
