@@ -248,6 +248,7 @@ public class APIController {
 
             ColorProduct colorProduct = new ColorProduct();
             colorProduct.setIdColor(value.getColorProduct().getIdColor());
+            colorProduct.setNameColor(value.getColorProduct().getNameColor());
             detailProduct.setColorProduct(colorProduct);
 
             Size size = new Size();

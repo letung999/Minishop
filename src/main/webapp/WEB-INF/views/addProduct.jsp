@@ -123,10 +123,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                     <span>Dành Cho</span><br>
                     <div class="radio">
-                        <label><input type="radio" name="gender" checked value="Nam">Nam</label>
+                        <label><input type="radio" id="rdmale" name="gender" checked value="Nam">Nam</label>
                     </div>
                     <div class="radio">
-                        <label><input type="radio" name="gender" value="Nũ">Nữ</label>
+                        <label><input type="radio" id="rdfemale" name="gender" value="Nũ">Nữ</label>
                     </div>
 
                     <label for="category">Danh Mục Sản Phẩm:</label>
@@ -161,7 +161,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </c:forEach>
                         </select><br>
 
-                        <input min="1" type="number" id="quanity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
+                        <input min="1" type="number" id="quantity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
                         <button class="btn-detail btn btn-secondary">Thêm Chi Tiết</button>
                     </div>
                 </div>
@@ -181,7 +181,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <option value="${size.idSize}">${size.nameSize}</option>
                         </c:forEach>
                     </select><br>
-                    <input type="number" id="quanity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
+                    <input type="number" id="quantity" name="quantity" placeholder="Nhập Vào Số Lượng" class="form-control"><br>
                     <button class="btn-detail btn btn-secondary">Thêm Chi Tiết</button>
 
                 </div>

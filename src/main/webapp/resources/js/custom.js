@@ -232,9 +232,8 @@ $(document).ready(function () {
 
     $("body").on("click",".btn-detail", function (){
         $(this).remove();// xoa nút đi
-        var detailClone = $("#detailProduct").clone();
+        var detailClone = $("#detailProduct").clone().removeAttr("id");
         $("#container-detail-product").append(detailClone);
-        detailClone.removeAttr("id");
     })
 
     $("#btn-addProduct").click(function (event){
@@ -284,7 +283,28 @@ $(document).ready(function () {
                 idProduct:idProduct,
             },
             success: function (value) {
+                $("#name-product").val(value.nameProduct)
+                $("#price").val(value.price);
+                $("#comment").val(value.description);
+                if(value.gender === "Nam"){
+                    $("#rdmale").prop("checked", true);
+                }
+                else{
+                    $("#rdfemale").prop("checked", true);
+                }
+
+                $("#category").val(value.productCategory.idCategory);
+
+                $("#container-detail-product").empty();
+                for(i = 0; i < value.listDetailProduct.length; ++i){
+                    var detailClone = $("#detailProduct").clone().removeAttr("id");
+                    detailClone.find("#color").val(value.listDetailProduct[i].colorProduct.idColor);
+                    detailClone.find("#size").val(value.listDetailProduct[i].size.idSize);
+                    detailClone.find("#quantity").val(value.listDetailProduct[i].quantity);
+                    $("#container-detail-product").append(detailClone);
+                }
                 console.log(value);
+
             }
         })
     })
