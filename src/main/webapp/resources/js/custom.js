@@ -351,6 +351,7 @@ $(document).ready(function () {
              }
          })
     })
+    /**/
 
     $("#btn-exit").click(function () {
         $("#btn-updateProduct").addClass("hiden");
