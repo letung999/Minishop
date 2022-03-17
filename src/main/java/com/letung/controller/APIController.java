@@ -129,7 +129,7 @@ public class APIController {
                     + "</td>";
             html += "<td class='price' data-value =" + product.getPrice() + "'>" + product.getPrice() + "</td>";
             html += "<td class='gender' data-gender =" + product.getGender() + "'>" + product.getGender() + "</td>";
-            html += "<td class='updateProduct btn btn-warning' data-id =" + product.getIdProduct() + ">Sửa</td>";
+            html += "<td class='btn-updateProduct btn btn-warning' data-id =" + product.getIdProduct() + ">Sửa</td>";
             html += "</tr>";
         }
 
@@ -220,4 +220,46 @@ public class APIController {
         }
     }
 
+    @PostMapping( path = "getListProductById", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public JasonProduct getListProductById(@RequestParam int idProduct){
+        JasonProduct jasonProduct = new JasonProduct();
+        Product product = productService.getProductById(idProduct);
+
+        jasonProduct.setIdProduct(product.getIdProduct());
+        jasonProduct.setNameProduct(product.getNameProduct());
+        jasonProduct.setPrice(product.getPrice());
+        jasonProduct.setGender(product.getGender());
+        jasonProduct.setPhoto(product.getPhoto());
+        jasonProduct.setDescription(product.getDescription());
+
+        /*jasonProduct.setProductCategory(product.getProductCategory());*/
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setIdCategory(product.getProductCategory().getIdCategory());
+        productCategory.setNameCategory(product.getProductCategory().getNameCategory());
+        jasonProduct.setProductCategory(productCategory);
+
+
+        /*jasonProduct.setListDetailProduct(product.getListDetailProduct());*/
+        Set<DetailProduct> listDetailProduct = new HashSet<>();
+        for (DetailProduct value:product.getListDetailProduct()){
+            DetailProduct detailProduct = new DetailProduct();
+            detailProduct.setIdDetailProduct(value.getIdDetailProduct());
+
+            ColorProduct colorProduct = new ColorProduct();
+            colorProduct.setIdColor(value.getColorProduct().getIdColor());
+            detailProduct.setColorProduct(colorProduct);
+
+            Size size = new Size();
+            size.setIdSize(value.getSize().getIdSize());
+            detailProduct.setSize(size);
+
+            detailProduct.setQuantity(value.getQuantity());
+
+            listDetailProduct.add(detailProduct);
+        }
+        jasonProduct.setListDetailProduct(listDetailProduct);
+
+        return jasonProduct;
+    }
 }

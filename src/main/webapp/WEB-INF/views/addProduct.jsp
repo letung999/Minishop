@@ -220,7 +220,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 data-idProduct="${product.idProduct}">${product.nameProduct}</td>
                             <td class="price" data-price ="${product.price}">${product.price}</td>
                             <td class="gender" data-gender ="${product.gender}">${product.gender}</td>
-                            <td class="btn btn-warning updateProduct" data-id ="${product.idProduct}">Sửa</td>
+                            <td class="btn btn-warning btn-updateProduct" data-id ="${product.idProduct}">Sửa</td>
                         </tr>
                     </c:forEach>
                     </tbody>

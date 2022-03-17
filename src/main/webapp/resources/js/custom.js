@@ -274,5 +274,20 @@ $(document).ready(function () {
         })
     })
 
+    $("body").on("click", ".btn-updateProduct", function (){
+        var idProduct = $(this).attr("data-id");
+
+        $.ajax({
+            url: "/fashtionshop_war/api/getListProductById",
+            type: "POST",
+            data:{
+                idProduct:idProduct,
+            },
+            success: function (value) {
+                console.log(value);
+            }
+        })
+    })
+
 
 })
