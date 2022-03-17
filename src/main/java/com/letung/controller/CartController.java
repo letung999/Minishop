@@ -1,11 +1,9 @@
 package com.letung.controller;
 
 
-import com.letung.entity.Bill;
-import com.letung.entity.Cart;
-import com.letung.entity.DetailBill;
-import com.letung.entity.DetailBillId;
+import com.letung.entity.*;
 import com.letung.service.BillService;
+import com.letung.service.CategoryService;
 import com.letung.service.DetailBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +22,9 @@ import java.util.Set;
 @RequestMapping("cart/")
 public class CartController {
     @Autowired
+    CategoryService categoryService;
+
+    @Autowired
     BillService billService;
 
     @Autowired
@@ -36,6 +37,8 @@ public class CartController {
             modelMap.addAttribute("quantity", cartList.size());
             modelMap.addAttribute("carts", cartList);
         }
+        List<ProductCategory> listCategory = categoryService.listProductCategory();
+        modelMap.addAttribute("listCategory", listCategory);
         return "cart";
     }
 

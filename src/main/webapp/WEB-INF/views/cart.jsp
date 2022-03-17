@@ -34,16 +34,12 @@
                     </a>
 
                     <div class="dropdown-menu open" aria-labelledby="navbarDropdown">
-
-                        <a class="dropdown-item" href="#">Action</a>
-
-                        <div class="dropdown-divider"></div>
-
-                        <a class="dropdown-item" href="#">Another action</a>
-
-                        <div class="dropdown-divider"></div>
-
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <c:forEach var="category" items="${listCategory}">
+                            <a class="dropdown-item" href='<c:url value="/category/${category.idCategory}/${category.nameCategory}"/>'>
+                                    ${category.getNameCategory()}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </c:forEach>
                     </div>
                 </li>
 
