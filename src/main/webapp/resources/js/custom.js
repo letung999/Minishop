@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var idProduct = 0;
     $("#btn-login").click(function () {
         var email = $("#email").val();
         var password = $("#password").val();
@@ -209,7 +210,7 @@ $(document).ready(function () {
         })
     })
     var files = [];
-    var filePhoto="";
+    var filePhoto = "";
 
     $("#picture").change(function () {
         files = event.target.files
@@ -221,34 +222,34 @@ $(document).ready(function () {
             url: "/fashtionshop_war/api/upLoadFile",
             type: "post",
             data: forms,
-            contentType:false,
+            contentType: false,
             processData: false,
-            enctype:"multipart/form-data",
+            enctype: "multipart/form-data",
             success: function (value) {
 
             }
         })
     })
 
-    $("body").on("click",".btn-detail", function (){
+    $("body").on("click", ".btn-detail", function () {
         $(this).remove();// xoa nút đi
         var detailClone = $("#detailProduct").clone().removeAttr("id");
         $("#container-detail-product").append(detailClone);
     })
 
-    $("#btn-addProduct").click(function (event){
+    $("#btn-addProduct").click(function (event) {
         event.preventDefault();
         var formData = $("#form-product").serializeArray();
         json = {};
         arrayDetailProduct = [];
 
-        $.each(formData, function(i, field) {
+        $.each(formData, function (i, field) {
             json[field.name] = field.value;
         });
         console.log(json)
 
-        $("#container-detail-product > .detail-product").each(function (){
-            objectDetail ={};
+        $("#container-detail-product > .detail-product").each(function () {
+            objectDetail = {};
             var colorProduct = $(this).find("select[name='color']").val();
             var sizeProduct = $(this).find("select[name='size']").val();
             var quantity = $(this).find("input[name='quantity']").val();
@@ -264,8 +265,8 @@ $(document).ready(function () {
         $.ajax({
             url: "/fashtionshop_war/api/addProduct",
             type: "POST",
-            data:{
-                dataJason:JSON.stringify(json),
+            data: {
+                dataJason: JSON.stringify(json),
             },
             success: function (value) {
 
@@ -273,40 +274,88 @@ $(document).ready(function () {
         })
     })
 
-    $("body").on("click", ".btn-updateProduct", function (){
-        var idProduct = $(this).attr("data-id");
-
+    $("body").on("click", ".btn-updateProduct", function () {
+        idProduct = $(this).attr("data-id");
+        $("#btn-updateProduct").removeClass("hiden")
+        $("#btn-exit").removeClass("hiden")
+        $("#btn-addProduct").addClass("hiden")
         $.ajax({
             url: "/fashtionshop_war/api/getListProductById",
             type: "POST",
-            data:{
-                idProduct:idProduct,
+            data: {
+                idProduct: idProduct,
             },
             success: function (value) {
                 $("#name-product").val(value.nameProduct)
                 $("#price").val(value.price);
                 $("#comment").val(value.description);
-                if(value.gender === "Nam"){
+                if (value.gender === "Nam") {
                     $("#rdmale").prop("checked", true);
-                }
-                else{
+                } else {
                     $("#rdfemale").prop("checked", true);
                 }
 
                 $("#category").val(value.productCategory.idCategory);
 
                 $("#container-detail-product").empty();
-                for(i = 0; i < value.listDetailProduct.length; ++i){
+                var count = value.listDetailProduct.length;
+                for (i = 0; i < count; ++i) {
                     var detailClone = $("#detailProduct").clone().removeAttr("id");
+                    if (i < count - 1) {
+                        detailClone.find(".btn-detail").remove();
+                    }
                     detailClone.find("#color").val(value.listDetailProduct[i].colorProduct.idColor);
                     detailClone.find("#size").val(value.listDetailProduct[i].size.idSize);
                     detailClone.find("#quantity").val(value.listDetailProduct[i].quantity);
                     $("#container-detail-product").append(detailClone);
                 }
-                console.log(value);
 
             }
         })
+    })
+
+    $("#btn-updateProduct").click(function () {
+        //event.preventDefault();
+        var formData = $("#form-product").serializeArray();
+        json = {};
+        arrayDetailProduct = [];
+
+        $.each(formData, function (i, field) {
+            json[field.name] = field.value;
+        });
+        console.log(json)
+
+        $("#container-detail-product > .detail-product").each(function () {
+            objectDetail = {};
+            var colorProduct = $(this).find("select[name='color']").val();
+            var sizeProduct = $(this).find("select[name='size']").val();
+            var quantity = $(this).find("input[name='quantity']").val();
+            objectDetail["colorProduct"] = colorProduct;
+            objectDetail["sizeProduct"] = sizeProduct;
+            objectDetail["quantity"] = quantity;
+            arrayDetailProduct.push(objectDetail);
+
+        })
+        json["idProduct"] = idProduct;
+        json["detailProduct"] = arrayDetailProduct;
+        json["photo"] = filePhoto;
+       // console.log(json);
+         $.ajax({
+             url: "/fashtionshop_war/api/updateProduct",
+             type: "POST",
+             data: {
+                 dataJason: JSON.stringify(json),
+             },
+             success: function (value) {
+
+             }
+         })
+    })
+
+    $("#btn-exit").click(function () {
+        $("#btn-updateProduct").addClass("hiden");
+        $(this).addClass("hiden");
+        $("#btn-addProduct").removeClass("hiden");
     })
 
 

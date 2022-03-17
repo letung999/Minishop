@@ -81,4 +81,12 @@ public class ProductDAO implements ProductImpl {
         int idProduct = (int) session.save(product);
         return false;
     }
+
+    @Override
+    @Transactional
+    public boolean updateProduct(Product product) {
+        Session session = sessionFactory.getCurrentSession();
+        session.update(product);
+        return false;
+    }
 }

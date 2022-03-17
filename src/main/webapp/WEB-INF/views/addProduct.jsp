@@ -189,6 +189,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div style="float: right; margin-bottom: 10px;">
                     <button id="btn-addProduct" class="btn btn-secondary">Thêm Sản Phẩm</button>
                 </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px">
+                    <button id="btn-updateProduct" class="btn btn-warning hiden">Cập Nhập</button>
+                    <button id="btn-exit" class="btn btn-warning hiden">Thoát</button>
+                </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div style="float: right; margin-bottom: 10px;">

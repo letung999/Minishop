@@ -263,4 +263,57 @@ public class APIController {
 
         return jasonProduct;
     }
+
+    @PostMapping("updateProduct")
+    @ResponseBody
+    public void updateProduct(@RequestParam String dataJason){
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonObject;
+
+        try {
+            jsonObject = objectMapper.readTree(dataJason);
+            Product product = new Product();
+
+            String nameProduct = jsonObject.get("name-product").asText();
+            String price = jsonObject.get("price").asText();
+            String gender = jsonObject.get("gender").asText();
+            String description = jsonObject.get("description").asText();
+            String photo = jsonObject.get("photo").asText();
+            int idProduct = jsonObject.get("idProduct").asInt();
+
+            ProductCategory category = new ProductCategory();
+            category.setIdCategory(jsonObject.get("category").asInt());
+
+            JsonNode jsonListDetail = jsonObject.get("detailProduct");
+            Set<DetailProduct> listDetailProduct = new HashSet<>();
+            for (JsonNode jasonDetail:jsonListDetail) {
+                DetailProduct detailProduct = new DetailProduct();
+
+                ColorProduct colorProduct = new ColorProduct();
+                colorProduct.setIdColor(jasonDetail.get("colorProduct").asInt());
+
+                Size size = new Size();
+                size.setIdSize(jasonDetail.get("sizeProduct").asInt());
+
+                detailProduct.setColorProduct(colorProduct);
+                detailProduct.setSize(size);
+                detailProduct.setQuantity(jasonDetail.get("quantity").asInt());
+
+                listDetailProduct.add(detailProduct);
+
+            }
+            product.setIdProduct(idProduct);
+            product.setNameProduct(nameProduct);
+            product.setPrice(price);
+            product.setGender(gender);
+            product.setProductCategory(category);
+            product.setDescription(description);
+            product.setPhoto(photo);
+            product.setListDetailProduct(listDetailProduct);
+            productService.updateProduct(product);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 }
