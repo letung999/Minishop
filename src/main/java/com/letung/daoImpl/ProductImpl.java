@@ -10,6 +10,5 @@ public interface ProductImpl {
     List<Product> getListProductByCategory(int idCategory);
     boolean deleteProductById(int idProduct);
     boolean addProduct(Product product);
-    /**/
     boolean updateProduct(Product product);
 }

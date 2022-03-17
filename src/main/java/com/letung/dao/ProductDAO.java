@@ -79,7 +79,6 @@ public class ProductDAO implements ProductImpl {
         int idProduct = (int) session.save(product);
         return false;
     }
-    /**/
 
     @Override
     @Transactional

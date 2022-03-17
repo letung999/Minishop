@@ -35,15 +35,13 @@
 
                     <div class="dropdown-menu open" aria-labelledby="navbarDropdown">
 
-                        <a class="dropdown-item" href="#">Action</a>
+                        <c:forEach var="category" items="${listCategory}">
+                            <a class="dropdown-item" href="#">
+                                    ${category.getNameCategory()}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </c:forEach>
 
-                        <div class="dropdown-divider"></div>
-
-                        <a class="dropdown-item" href="#">Another action</a>
-
-                        <div class="dropdown-divider"></div>
-
-                        <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
 
@@ -68,9 +66,23 @@
                     </c:choose>
                 </li>
 
-                <li><a href='<c:url value ="/cart/"/>'><img id="image-cart"
-                                                            src='<c:url value="/resources/image/shopping-cart.png" />'/></a>
+                <li id="cart">
+                    <a href='<c:url value ="/cart/"/>'><img id="image-cart"
+                                                            src='<c:url value="/resources/image/shopping-cart.png" />'/>
+                        <c:if test="${quantity > 0}">
+                            <div class="circle-quantity">
+                                <span>${quantity}</span>
+                            </div>
+                        </c:if>
+
+                        <c:if test="${quantity <= 0 || quantity == null}">
+                            <div>
+                                <span>${quantity}</span>
+                            </div>
+                        </c:if>
+                    </a>
                 </li>
+
             </ul>
         </div>
     </nav>
@@ -81,10 +93,9 @@
         <div class="col-sm-2 col-md-2">
             <h3>Danh Mục</h3>
             <ul class="main-menu" style="padding: 1px">
-                <li><a>Quần Jean</a></li>
-                <li><a>Quần Jean</a></li>
-                <li><a>Quần Jean</a></li>
-                <li><a>Quần Jean</a></li>
+                <c:forEach var="category" items="${listCategory}">
+                    <li><a href="#">${category.getNameCategory()}</a></li>
+                </c:forEach>
             </ul>
 
         </div>
@@ -105,8 +116,9 @@
                 </div>
 
                 <div class="col-sm-8 col-md-8">
-                    <h4>${productById.getNameProduct()}</h4>
-                    <h5>${productById.getPrice()}</h5>
+                    <h4 id="name-product"
+                        data-idProduct="${productById.getIdProduct()}">${productById.getNameProduct()}</h4>
+                    <h5 id="price">${productById.getPrice()}</h5>
 
                     <table class="table table-sm">
                         <thead>
@@ -120,9 +132,16 @@
                         <tbody>
                         <c:forEach var="productDetail" items="${productById.getListDetailProduct()}">
                             <tr>
-                                <td>${productDetail.getColorProduct().getNameColor()}</td>
-                                <td>${productDetail.getSize().getNameSize()}</td>
-                                <td>${productDetail.getQuantity()}</td>
+                                <td class="color"
+                                    data-idColor="${productDetail.getColorProduct().getIdColor()}">${productDetail.getColorProduct().getNameColor()}</td>
+                                <td class="size"
+                                    data-idSize="${productDetail.getSize().getIdSize()}">${productDetail.getSize().getNameSize()}</td>
+                                <td class="quantity">${productDetail.getQuantity()}</td>
+                                <td>
+                                    <button data-idDetailProduct="${productDetail.getIdDetailProduct()}"
+                                            class="btn btn-danger btn-cart">Giỏ hàng
+                                    </button>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
