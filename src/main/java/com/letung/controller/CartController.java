@@ -34,6 +34,9 @@ public class CartController {
     public String Default(HttpSession httpSession, ModelMap modelMap) {
         if (httpSession.getAttribute("cart") != null) {
             List<Cart> cartList = (List<Cart>) httpSession.getAttribute("cart");
+            String email = (String) httpSession.getAttribute("email");
+            String firstWord = email.substring(0, 1).toUpperCase();
+            modelMap.addAttribute("firstWord", firstWord);
             modelMap.addAttribute("quantity", cartList.size());
             modelMap.addAttribute("carts", cartList);
         }
